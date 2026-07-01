@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+
+metadata:
+  name: enterprise-apps
+  namespace: argocd
+
+spec:
+  generators:
+  - list:
+      elements:
+      - env: development
+      - env: qa
+      - env: staging
+      - env: production
+
+  template:
+    metadata:
+      name: '{{env}}-application'
+
+    spec:
+      project: default
+
+      source:
+        repoURL: https://github.com/sashivardhan4482/Enterprise-gitops-1.git
+        targetRevision: HEAD
+        path: applications/{{env}}
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{env}}'
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
