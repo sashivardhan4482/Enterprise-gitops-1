@@ -23,7 +23,7 @@ spec:
 
       source:
         repoURL: https://github.com/sashivardhan4482/Enterprise-gitops-1.git
-        targetRevision: HEAD
+        targetRevision: main
         path: applications/{{env}}
 
       destination:
